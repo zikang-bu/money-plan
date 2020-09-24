@@ -38,7 +38,7 @@
   },
   "main": "app",
   "scripts": {
-    "start": "node app",
+    "start": "nodemon app",
     "dev": "NODE_ENV=development nodemon --quiet | pino-pretty -c -l -t",
     "docs": "docsify serve docs",
     "test": "NODE_ENV=test jest --passWithNoTests",
@@ -64,6 +64,7 @@
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.4.0",
+    "mysql": "^2.18.1",
     "pino": "^5.14.0",
     "swagger-jsdoc": "^3.5.0",
     "uuid": "^3.3.3"

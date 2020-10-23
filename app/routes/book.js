@@ -6,4 +6,6 @@ router.prefix('/api/v1/book')
 
 router.get('/items', bookController.items);
 
+router.post('/setItem', bookController.setItem);
+
 module.exports = router;

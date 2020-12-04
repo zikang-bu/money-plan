@@ -2,15 +2,26 @@ const { query, insert, update } = require('../utils/better-mysql');
 
 const bookModel = {
   items(params) {
-    const { pageNumber, pageSize, orderBy } = params;
-    const sql = `select * from book  ORDER BY ${orderBy}  limit ${(pageNumber - 1) * pageSize},${pageSize}`;
+    const { date } = params;
+    const sql = `SELECT
+                  a.id,
+                  a.amount,
+                  a.date,
+                  a.type,
+                  a.category AS categoryId,
+                  a.remarks,
+                  c.name AS category 
+                  FROM
+                  bill a 
+                  JOIN category c ON a.category = c.id
+                  where a.date like '${date}%' `;
     return query(sql);
   },
   setItem(params) {
-    return insert(params, 'book');
+    return insert(params, 'bill');
   },
   updateItem({ id: id, ...params }) {
-    return update(params, 'book', { id: id });
+    return update(params, 'bill', { id: id });
   }
 };
 

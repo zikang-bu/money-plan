@@ -64,6 +64,8 @@
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.4.0",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "pino": "^5.14.0",
     "swagger-jsdoc": "^3.5.0",

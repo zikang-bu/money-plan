@@ -8,14 +8,20 @@ exports.items = async (ctx) => {
   const items = await bookModel.items(ctx.request.query);
   items.forEach(i => i.date = dateFn.dateformat(i.date, 'YYYY-MM-DD'))
   const obj = _.groupBy(items, 'date')
-  let data = []
+  let arr = []
   for (let key in obj) {
-    data.push({
+    arr.push({
       date: key,
+      week: dateFn.getWeek(key),
       expend: countFn.add(obj[key].filter(i => i.type === 1).map(i => i.amount)),
       income: countFn.add(obj[key].filter(i => i.type === 2).map(i => i.amount)),
       items: obj[key],
     })
+  }
+  const data = {
+    items: arr,
+    expend: countFn.add(arr.map(i => i.expend)),
+    income: countFn.add(arr.map(i => i.income))
   }
   return Response.success(ctx, {
     code: 200,

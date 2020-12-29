@@ -1,11 +1,11 @@
 const Response = require('../utils/response');
-const bookModel = require('../model/book');
+const userModel = require('../model/user');
 const dateFn = require('../utils/date')
 const nodemailer = require("nodemailer");
 
 //获取用户信息
 exports.info = async (ctx) => {
-  const data = await bookModel.items(ctx.request.query);
+  const data = await userModel.info(ctx.request.query);
   return Response.success(ctx, {
     code: 200,
     data,
@@ -15,17 +15,17 @@ exports.info = async (ctx) => {
 // 登录
 exports.login = async (ctx) => {
   const params = ctx.request.body
-  const data = await bookModel.setItem(params)
+  const data = await userModel.checkUser(params)
   return Response.success(ctx, {
     code: 200,
-    data,
+    data: { count: data[0].count },
     message: 'success'
   });
 };
 // 注册
 exports.register = async (ctx) => {
   const params = ctx.request.body
-  const data = await bookModel.setItem(params)
+  const data = await userModel.setItem(params)
   return Response.success(ctx, {
     code: 200,
     data,
@@ -60,13 +60,14 @@ exports.vertifyCode = async (ctx) => {
   if (mail === session.mail && code === session.code && Date.now() < session.invalidTime) {
     res = {
       code: 200,
-      data: { msg: '验证成功！' },
+      data: { code: 1, msg: '验证成功！' },
       message: 'success'
     }
   } else {
     res = {
-      code: -2,
-      message: '验证码错误！'
+      code: 200,
+      data: { code: 0, msg: '验证码错误！' },
+      message: 'success'
     }
   }
   return Response.success(ctx, res);

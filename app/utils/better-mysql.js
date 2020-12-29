@@ -11,7 +11,6 @@ let pool = mysql.createPool({
 });
 
 let query = (sql) => {
-  console.log('-------query -> sql', sql);
   return _operation(sql);
 };
 /**
@@ -62,7 +61,6 @@ let deleteItem = (info, table, where, link = 'AND') => {
 };
 
 let _operation = (sql) => {
-  console.log('-----------_operation -> sql', sql);
   return new Promise((resolve, reject) => {
     pool.getConnection(function (err, connection) {
       if (err) {

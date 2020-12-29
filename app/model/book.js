@@ -10,7 +10,8 @@ const bookModel = {
                   a.type,
                   a.category AS categoryId,
                   a.remarks,
-                  c.name AS category 
+                  c.name AS category,
+                  c.icon 
                   FROM
                   bill a 
                   JOIN category c ON a.category = c.id

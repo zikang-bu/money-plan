@@ -34,6 +34,7 @@ const toResponse = (statusCode, params = {}) => {
   if (statusCode < 400) {
     return {
       status: 'success',
+      code,
       data,
       message
     };
@@ -61,6 +62,7 @@ class Response {
       ctx.status = this.STATUS_CODES.OK;
     }
     ctx.body = toResponse(ctx.status, params);
+    console.log('ctx.body', ctx.body)
     return ctx.body;
   }
 

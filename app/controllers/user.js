@@ -16,16 +16,20 @@ exports.info = async (ctx) => {
 exports.login = async (ctx) => {
   const params = ctx.request.body
   const data = await userModel.checkUser(params)
+  const count = data[0].count;
+  if (count > 0) {
+    ctx.session.mail = params.mail;
+  }
   return Response.success(ctx, {
     code: 200,
-    data: { count: data[0].count },
+    data: { count },
     message: 'success'
   });
 };
 // 注册
 exports.register = async (ctx) => {
   const params = ctx.request.body
-  const data = await userModel.setItem(params)
+  const data = await userModel.setItem({ ...params, mail: ctx.session.mailRegister })
   return Response.success(ctx, {
     code: 200,
     data,
@@ -43,7 +47,7 @@ exports.sendCode = async (ctx) => {
   }
   await sendMail(mail, code)
   const invalidTime = Date.now() + 120000;
-  ctx.session.mail = mail;
+  ctx.session.mailRegister = mail;
   ctx.session.code = code;
   ctx.session.invalidTime = invalidTime;
   return Response.success(ctx, {
@@ -57,7 +61,7 @@ exports.vertifyCode = async (ctx) => {
   const { mail, code } = ctx.request.body
   const session = ctx.session
   let res = {};
-  if (mail === session.mail && code === session.code && Date.now() < session.invalidTime) {
+  if (mail === session.mailRegister && code === session.code && Date.now() < session.invalidTime) {
     res = {
       code: 200,
       data: { code: 1, msg: '验证成功！' },

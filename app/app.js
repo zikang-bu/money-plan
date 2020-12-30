@@ -90,6 +90,7 @@ class App extends Koa {
     //定义允许直接访问的url
     const allowpage = [
       '/api/v1/user/login',
+      '/api/v1/user/register',
       '/api/v1/book/items',
       '/api/v1/book/setItem',
       '/api/v1/user/sendCode',
@@ -99,7 +100,7 @@ class App extends Koa {
     this.use(async (ctx, next) => {
       const idx = ctx.originalUrl.indexOf('?') > -1 ? ctx.originalUrl.indexOf('?') : ctx.originalUrl.length
       const url = ctx.originalUrl.substring(0, idx)
-      if (allowpage.indexOf(url) > -1 || ctx.session.username) {
+      if (allowpage.indexOf(url) > -1 || ctx.session.mail) {
         console.log('当前地址可直接访问')
         await next()
       } else {
